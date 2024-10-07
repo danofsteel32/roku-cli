@@ -163,7 +163,16 @@ class RokuCLI():
 
 
 def main():
-    RokuCLI().run()
+    try:
+        RokuCLI().run()
+    except OSError as e:
+        errno = int(str(e).split("Errno")[-1].split("]")[0].strip())
+        if errno == 113:
+            print("No route to host")
+        elif errno == 111:
+            print("Not a roku device")
+        sys.exit(1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
